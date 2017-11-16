@@ -45,6 +45,7 @@ class BridgeVersionClient(object):
         #self.comm.loop()
         #self.stop()
 
+
     def clearScreen(self):
         # Открываем последовательный порт по заданному пути
         self.comm.open_serial(SERIAL_TYPE, self.path)
