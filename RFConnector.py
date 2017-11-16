@@ -67,7 +67,9 @@ class BridgeVersionClient(object):
 
 
     def _prnstr(self, outstr):
-        for st in outstr:
+        print outstr
+        for i in range (0, len(outstr)):#st in outstr:
+            st=outstr[i]
             newLabel = ord(st)
             h=hex(newLabel)
             hh=(h[2:])
@@ -81,7 +83,7 @@ class BridgeVersionClient(object):
                s='SOH'
             elif p=='\x02':
                 s='STX'
-            elif p=='41':
+            elif p=='\x41':
                 s='WTF'
             elif p=='\x1B':
                 s='1B'

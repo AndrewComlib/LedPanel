@@ -14,7 +14,7 @@ class display:
         self.STX='\x02'
         self.currentFileLabel='\x41'
         self.EOT='\x04'
-        self.SYNC='\x00,\x00,\x00,\x00,\x00,\x00,\x00,\x00,\x00,\x00'
+        self.SYNC='\x00'*10
 
 
     def ledInit(self):
@@ -58,8 +58,7 @@ class display:
 
         outString += spetialFunction.DISPLAY_POSITION_FILL
 
-        outString += '\x20,\x20,\x20,\x20,\x20,\x20,\x20,\x20,\x20,\x20,\x20,\x20,\x20,\x20,\
-                    \x20,\x20\x20,\x20,\x20,\x20'
+        outString += '\x20'*10
 
         outString += self.EOT
         return outString
