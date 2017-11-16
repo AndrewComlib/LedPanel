@@ -64,6 +64,7 @@ class display:
         outString += self.EOT
         return outString
 
+
     def _getPrefix(self, message):
         outString =''
         outString += self.SOH
