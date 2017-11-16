@@ -25,17 +25,21 @@ class BridgeVersionClient(object):
         #self.stop()
     '''
 
-    def sendMessage(self, message):
+    def sendMessage(self, packet):
         # Открываем последовательный порт по заданному пути
         self.comm.open_serial(SERIAL_TYPE, self.path)
         #Отправляем сообщение на ноду через RPC
-        #self.comm.rpc(self.nodeAddress, 'sb', message,0)#'writePacket', message, 0.1)
-        #message='\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x5A\x30\x30\x02\x45\x24\x04'
-        #print message
-        self._prnstr(message)
-        self.comm.rpc(self.nodeAddress, 'writePacket', message, 200)
-        self.comm.poll()
-        #sleep(0.3)
+        #self.comm.rpc(self.nodeAddress, 'writePacket', '\x01\x5A\x30\x30\x02\x41\x41\x1B\x30\x62\x1C\x31\x68\x68\x68\x68\x68\x04', 0)
+        #self.comm.poll()
+
+
+        for message in packet:
+            self._prnstr(message)
+            self.comm.rpc(self.nodeAddress, 'writePacket', message)
+            self.comm.loop()
+            sleep(3)
+            self.comm.poll()
+
         self.comm.loop()
         #for b in message:
         #    self.comm.rpc(self.nodeAddress, 'sendPacket', b, 200)

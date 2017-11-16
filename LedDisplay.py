@@ -22,20 +22,24 @@ class display:
         ledSerialPort = serial.Serial("/dev/ttyS0", baudrate=9600, timeout=1.0)
 
     def prepareMessage(self, message):
-        packet = ''
+        packet = []
         #Clearing the display
-        packet += self._getMessageBlankDisplay()
+        #packet += self._getMessageBlankDisplay()
+        packet.append(self._getMessageBlankDisplay())
 
         #Adding sync bytes
-        packet += self.SYNC
+        #packet += self.SYNC
         #Add packet prefix
-        packet += self._getPrefix(message)
+        #packet += self._getPrefix(message)
+        packet.append(self.SYNC+self._getPrefix(message))
         #Encode strings and add them to acket
         strArray=message[::-1]      #Invert list of strings
         for string in strArray:
-            packet += self._getEncodedString(string)
+            #packet += self._getEncodedString(string)
+            packet.append(self._getEncodedString(string))
         #Add packet suffix
-        packet += self._getSuffix(message)
+        #packet += self._getSuffix(message)
+        packet.append(self._getSuffix(message))
         #self._prnstr(packet)#####################################
         return packet
 
