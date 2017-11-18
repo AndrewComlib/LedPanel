@@ -8,6 +8,7 @@ import signal
 
 import LedDisplay as display
 import RFConnector
+import RFConnector2
 
 if __name__ == "__main__":
     conn=None
@@ -60,7 +61,20 @@ if __name__ == "__main__":
     #Отправляем строку байт на ноду
 
     #conn.clearScreen()
-    conn.sendMessage(message)
+    #conn.sendMessage(message)
+
+
+    try:
+        #Коннектор стика
+        conn2 = RFConnector2.BridgeVersionClient(stickAddress, targetNodeAddress, message)
+    except:
+        print 'RF module connection error'
+        sys.exit(2)
+
+
+    print 'send message to conn2'
+
+
 
 
 

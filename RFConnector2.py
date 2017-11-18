@@ -8,34 +8,40 @@ SERIAL_TYPE = snap.SERIAL_TYPE_RS232
 
 class BridgeVersionClient(object):
 
-    def __init__(self, path, nodeAddress):
+    def __init__(self, path, nodeAddress, message):
+        print 'init conn2'
         self.path=path
         self.nodeAddress=nodeAddress
+        self.message=message
         #Создаем экземпляр SnapConnect
-        self.comm = snap.Snap(funcs = {})
+        self.comm = snap.Snap(funcs = {'reportLightState': self.start})
 
-        #self.comm.
-         #   .set_hook()
-          #  (snap.hooks.HOOK_RPC_SENT)
-    '''
-    def sendMessage(self, message):
-        # Открываем последовательный порт по заданному пути
-        self.comm.open_serial(SERIAL_TYPE, self.path)
-        #Отправляем сообщение на ноду через RPC
-        #self.comm.rpc(self.nodeAddress, 'sb', message,0)#'writePacket', message, 0.1)
-        self.comm.rpc(self.nodeAddress, 'writePacket', message, 0)
-        self.comm.poll()
+        self.comm.set_hook(snap.hooks.HOOK_SNAPCOM_OPENED, self.hook_open)
+        self.comm.set_hook(snap.hooks.HOOK_SNAPCOM_CLOSED, self.hook_closed)
+        #self.comm.set_hook(snap.hooks.HOOK_10MS, self.make_poll)
+
         self.comm.loop()
-        #self.stop()
-    '''
+
+    def start(self, m):
+        print 'm'
+        self.comm.poll()
+
+    def make_poll(self):
+        self.comm.poll()
+
+    def hook_open(*args):
+        print "SNAPCOM OPENED: %r" % (args,)
+        print 'open'
+
+    def hook_closed(*args):
+        print "SNAPCOM CLOSED: %r" % (args,)
+        print  'closed'
+
 
     def sendMessage(self, packet):
         # Открываем последовательный порт по заданному пути
         self.comm.open_serial(SERIAL_TYPE, self.path)
         #Отправляем сообщение на ноду через RPC
-        #self.comm.rpc(self.nodeAddress, 'writePacket', '\x01\x5A\x30\x30\x02\x41\x41\x1B\x30\x62\x1C\x31\x68\x68\x68\x68\x68\x04', 0)
-        #self.comm.poll()
-
 
         for message in packet:
             self._prnstr(message)
